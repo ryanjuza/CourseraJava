@@ -40,7 +40,7 @@ public class Part2 {
         String noTAA = "CCCATGCGGATTGATGAGTTT";
         String noATGTAA = "GTACTGGCCATTTGA";
         String notThree = "GCTATGGGTCTGACCATTAAGT";
-        String proper = "GGGATGGTACGTATCGCATCGTAAAAA";
+        String proper = "AAATGCCCTAACTAGATTAAGAAACC";
         
         //Prints the DNA string. 
         System.out.println("DNA string = " + proper.toLowerCase());

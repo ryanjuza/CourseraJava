@@ -38,11 +38,12 @@ public class Part1 {
         String notThree = "GCTATGGGTCTGACCATTAAGT";
         String proper = "GGGATGGTACGTATCGCATCGTAAAAA";
         
+        
         //Prints the DNA string. 
-        System.out.println("DNA string = " + proper);
+        System.out.println("DNA string = " + noATGTAA);
         
         //Calls findSimpleGene with chosen string as the parameter
-        String tested = findSimpleGene(proper);
+        String tested = findSimpleGene(noATGTAA);
         
         //If a gene exists, prints the gene
         if (tested != ""){
