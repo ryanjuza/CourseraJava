@@ -16,18 +16,20 @@ public class Part1 {
         //Finds the index position of the first stop codon, appearing after the SsartIndex that was found (the 'start+3').
         //If the length of the substring between the startIndex and stopCodon is a multiple of 3,
         //returns the index of the stopCodon
-        int stop = dna.indexOf(stopCodon, startIndex+3);
-        
-        if (startIndex != -1){
-            if ((stop - startIndex) % 3 == 0){
+        int currIndex = dna.indexOf(stopCodon, startIndex+3);
+        while(currIndex != -1){
+            if ((currIndex - startIndex) % 3 == 0){
             //returns index of the stop codon, starting AFTER the start codon
-            return dna.indexOf(stopCodon, startIndex+3);
+            return currIndex;
             }
             //If there is no such stopCodon, return the length of the dna strand
-            else{return dna.length();}
+            else{
+                //updates currIndex to the index of the next stopCodon AFTER the current one 
+                currIndex = dna.indexOf(stopCodon, currIndex+1);
+            }
         }
-        //if startIndex is -1, returns dna string
-        else{return startIndex;}
+        //if there is no stopcodon (or startcodon), returns length of dna string
+        return -1;
     }
     
     public void testFindStopCodon(){
@@ -35,7 +37,9 @@ public class Part1 {
         String[] stopExamples= new String[]{
         //proper taa
         "CCCATGCCCAAATTTGGGTAA",
-        //nothing
+        //no ATG
+        "CCCAAAGGGTTTCCCAAA",
+        //no start codon, but has stop codon
         "CCCAAAGGGTTTTTTAAA",
         //has atg but no stop codon
         "atggggtttaaaccctttggg",
@@ -58,7 +62,6 @@ public class Part1 {
     }
     
     public String findGene(String dna){
-            String gene;
             String startCodon = "ATG";
             //Checks if the 'dna' string is lowercase. If so, makes the exampleStartCodon lower case as well
             if(dna.equals(dna.toLowerCase())){
@@ -67,25 +70,37 @@ public class Part1 {
             //Finds the index position of the start codon “ATG”.
             int startIndex = dna.indexOf(startCodon);
             
-            if(startIndex != -1){
-                int stopIndexTAA = findStopCodon(dna, startIndex, "TAA");
-                int stopIndexTAG = findStopCodon(dna, startIndex, "TAG");
-                int stopIndexTGA = findStopCodon(dna, startIndex, "TGA");
-
-                if((stopIndexTAA < stopIndexTAG) && (stopIndexTAA < stopIndexTGA)){
-                    gene = dna.substring(startIndex, stopIndexTAA+3);
-                }
-                else if((stopIndexTAG < stopIndexTAA) && (stopIndexTAG < stopIndexTGA)){
-                    gene = dna.substring(startIndex, stopIndexTAG+3);
-                }
-                else if((stopIndexTGA < stopIndexTAA) && (stopIndexTGA < stopIndexTAG)){
-                    gene = dna.substring(startIndex, stopIndexTGA+3);
-                }
-                else{gene = dna + " has ATG, but no gene";}
+            //Ensures there is a start codon
+            if(startIndex == -1){
+                return (dna + " has no ATG");
             }
-            else{return dna + " has no ATG";}
-            return gene;
-    }
+        
+            //Finds first occurence of each stop codon
+            int stopIndexTAA = findStopCodon(dna, startIndex, "TAA");
+            int stopIndexTAG = findStopCodon(dna, startIndex, "TAG");
+            int stopIndexTGA = findStopCodon(dna, startIndex, "TGA");
+            
+            int minIndex = 0;
+            
+            //Finds the smaller between TAA and TAG
+            if(stopIndexTAA == -1 || (stopIndexTAG != -1 && stopIndexTAG < stopIndexTAA)){
+                minIndex = stopIndexTAG;
+            }
+            else{
+                minIndex = stopIndexTAA;
+            }
+            //Finds smaller between previous smaller and TGA
+            if(minIndex == -1 || (stopIndexTGA != -1 && stopIndexTGA < minIndex)){
+                minIndex = stopIndexTGA;
+            }
+            
+            //if none found by the time you reach the end of the dna string, return message
+            if(minIndex == -1){
+                return "No stop codon and/or no stop codon that is a multiple of 3";
+            }
+            //returns found gene!
+            return dna.substring(startIndex, minIndex+3);
+}
     
     public void testFindGene(){
         //test values for findGene method
@@ -94,7 +109,7 @@ public class Part1 {
         "CCCAAAGGGTTTTTTAAA",
         //DNA with “ATG” and one valid stop codon
         "CCCATGCCCAAATTTGGGTAA",
-        //DNA with “ATG” and multiple valid stop codons
+        //DNA with “ATG” and multiple valid stop codons (should find first one, tag)
         "atgaaatttgggtagccctttgggtaagggtgaccc",
         //DNA with “ATG” and no valid stop codons
         "atggggtttaaaccccctttt",
@@ -111,6 +126,7 @@ public class Part1 {
         //repeatedly find genes and 
         //print each one 
         //until there are no more genes
+        //(use while-true loop and use a break)
     }
 }
 
