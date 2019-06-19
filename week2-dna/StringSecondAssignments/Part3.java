@@ -1,12 +1,11 @@
 
 /**
- * Newest class for finding genes in DNA strands, with looping
+ * Third class for finding genes in DNA strands, with looping
  * 
  * @author: Ryan Juza
- * @version: 061019
+ * @version: 061919
  */
-public class Part1 {
-    
+public class Part3 {
     public int findStopCodon(String dna, int startIndex, String stopCodon){        
         //Checks if the 'dna' string is lowercase. If so, makes the stopCodon lower case as well
         if(dna.equals(dna.toLowerCase())){
@@ -68,7 +67,7 @@ public class Part1 {
             }
             //Finds the index position of the start codon “ATG”.
             int startIndex = dna.indexOf(startCodon, where);
-            System.out.println(startIndex);//TEST CODE
+            //TEST CODESystem.out.println(startIndex);
             //Ensures there is a start codon
             if(startIndex == -1){
                 return "";
@@ -95,7 +94,7 @@ public class Part1 {
             
             //if none found by the time you reach the end of the dna string, return message
             if(minIndex == -1){
-                return "No stop codon and/or no stop codon that is a multiple of 3";
+                return "";
             }
             //returns found gene!
             return dna.substring(startIndex, minIndex+3);
@@ -162,5 +161,85 @@ public class Part1 {
         printAllGenes(dnaExamples[i]);
         }
     }
+    
+    public int howMany(String stringa, String stringb){
+        //checks if it is lower case
+        if(stringb == stringb.toLowerCase()){
+            stringa = stringa.toLowerCase();
+        }
+        //declare first instance of stringa in stringb and set it to a variable
+        int currIndex = stringb.indexOf(stringa);
+        //declare count tracking integer
+        int counter = 0;
+        // find how many times stringa appears in stringb
+        while(currIndex != -1){
+            //adds to counter if new index found
+            counter ++;
+            //sets currIndex to the next index of string a in string b AFTER the most recent one
+            currIndex = stringb.indexOf(stringa, currIndex+stringa.length());
+        }
+        return counter;
+    }
+    
+    public void testHowMany(){
+        //examples to test howMany
+        String[] examples= new String[]{
+        // 1 // 3 ATG ina row
+        "AAAATGATGATGCCCGGGTTT",
+        // 2 // no ATG
+        "CCCAAAGGGTTTCCCAAA",
+        // 3 // 2 ATG, then one more
+        "ATGATGCCCGGGTTTAAAATG",
+        // 4 // 3 seperate ATG
+        "atggggtttatgccctttatgggg"
+        };
+        
+        String stringa = "ATG";
+        
+        for(int i = 0; i<examples.length; i++){
+            System.out.println("Example " + (i+1) + ": " + howMany(stringa, examples[i]));
+        }
+    }
+    
+    public int countGenes(String dna){
+        //repeatedly find genes and 
+        //count each one 
+        //until there are no more genes
+        int startIndex = 0;
+        int counter = 0;
+        while(true){
+            //gets gene from dna
+            String currentGene = findGene(dna, startIndex);
+            //if no gene was found, break
+            if(currentGene.isEmpty()){
+                break;
+            }
+            //count the gene (this is after the no-gene; check to make sure it breaks)
+            counter ++;
+            //sets startIndex to next character after found gene
+            startIndex = dna.indexOf(currentGene, startIndex) + currentGene.length();
+        }
+        return counter;
+    }
+    
+    public void testCountGenes(){
+        //examples to test countGenes
+        String[] examples= new String[]{
+        // 1 // 3 genes
+        //  _             __          _   _          _ 
+        "AAAATGCCCTTTAAATAAATGCCCAAATAGAAAATGCCCGGGTAA",
+        // 2 // no genes
+        "CCCAAAGGGTTTCCCAAA",
+        // 3 // 2 ATG, then one gene, then one ATG
+        //  _          _   
+        "ATGATGCCCGGGTAAAAAATG",
+        // 4 // 4 genes, one non-three stop codon
+        //  _          __          _           _   _    ^  
+        "cccatggggttttgaatgcccttttaacccatggggtagcccatgtttaaataa"
+        };
+        
+        for(int i = 0; i<examples.length; i++){
+            System.out.println("Example " + (i+1) + ": " + countGenes(examples[i]));
+        }
+    }
 }
-
