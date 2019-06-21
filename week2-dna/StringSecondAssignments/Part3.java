@@ -5,6 +5,9 @@
  * @author: Ryan Juza
  * @version: 061919
  */
+
+import edu.duke.*;
+
 public class Part3 {
     public int findStopCodon(String dna, int startIndex, String stopCodon){        
         //Checks if the 'dna' string is lowercase. If so, makes the stopCodon lower case as well
@@ -120,9 +123,10 @@ public class Part3 {
         }
     }
     
-    public void printAllGenes(String dna){
+    public StorageResource getAllGenes(String dna){
+        StorageResource geneList = new StorageResource();
         //repeatedly find genes and 
-        //print each one 
+        //add each one to geneList
         //until there are no more genes
         int startIndex = 0;
         while(true){
@@ -132,14 +136,15 @@ public class Part3 {
             if(currentGene.isEmpty()){
                 break;
             }
-            //print the gene (this is after the no-gene; check to make sure it breaks)
-            System.out.println(currentGene);
+            //add gene to geneList (this is after the no-gene; check to make sure it breaks)
+            geneList.add(currentGene);
             //sets startIndex to next character after found gene
             startIndex = dna.indexOf(currentGene, startIndex) + currentGene.length();
         }
+        return geneList;
     }
     
-    public void testPrintAllGenes(){
+    public void testGetAllGenes(){
         //test values for printAllGenes method
         String[] dnaExamples= new String[]{
         //empty string
@@ -158,7 +163,10 @@ public class Part3 {
         counter++;
         //prints out the restults of each example
         System.out.println("Example " + counter + ": " + dnaExamples[i]);
-        printAllGenes(dnaExamples[i]);
+        StorageResource genes = getAllGenes(dnaExamples[i]);
+            for(String g: genes.data()){
+                System.out.println(g);
+            }
         }
     }
     
