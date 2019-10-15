@@ -17,8 +17,12 @@ public class exportGoods {
         
         // String countryExportsValue = countryInfo(parser, "Germany");
         // System.out.println(countryExportsValue);
+
+        // listExportersTwoProducts(parser, "gold", "diamonds");
         
-        listExportersTwoProducts(parser, "gold", "diamonds");
+        String export = "coffee";
+        int numberOfCountries = numberOfExporters(parser, export);
+        System.out.println(numberOfCountries + " countries export " + export + ".");
     }
 
     public String countryInfo(CSVParser parser, String country){
@@ -42,6 +46,17 @@ public class exportGoods {
                 System.out.println(country);
             }
         }
+    }
+    
+    public int numberOfExporters(CSVParser parser, String exportItem){
+        int counter = 0;
+        for(CSVRecord record : parser){
+            String exports = record.get("Exports");
+            if(exports.contains(exportItem)){
+                counter++;
+            }
+        }
+        return counter;
     }
 }
 
