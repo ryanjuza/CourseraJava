@@ -1,8 +1,0 @@
-#BlueJ class context
-comment0.target=Part4
-comment0.text=\r\n\ THis\ class\ gets\ YouTube\ links\ from\ a\ URl\ of\ links\r\n\ \r\n\ @author\ Ryan\ Juza\r\n\ @version\ 060319\r\n
-comment1.params=word
-comment1.target=void\ getYouTube(java.lang.String)
-comment2.params=
-comment2.target=void\ main()
-numComments=3

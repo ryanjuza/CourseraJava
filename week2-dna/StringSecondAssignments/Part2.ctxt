@@ -1,8 +1,0 @@
-#BlueJ class context
-comment0.target=Part2
-comment0.text=\r\n\ Second\ class\ for\ finding\ genes\ in\ DNA\ strands,\ with\ looping\r\n\ \r\n\ @author\:\ Ryan\ Juza\r\n\ @version\:\ 061919\r\n
-comment1.params=stringa\ stringb
-comment1.target=int\ howMany(java.lang.String,\ java.lang.String)
-comment2.params=
-comment2.target=void\ testHowMany()
-numComments=3
